@@ -1,0 +1,11 @@
+/vendor/
+/var/
+/.phpunit.cache/
+/.env.local
+/.env.*.local
+
+###> symfony/framework-bundle ###
+/.env.local.php
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+###< symfony/framework-bundle ###

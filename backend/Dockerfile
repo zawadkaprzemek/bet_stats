@@ -11,15 +11,20 @@ RUN apt-get update \
         unzip \
         zip \
         libicu-dev \
+        libxml2-dev \
         libzip-dev \
         libonig-dev \
         default-mysql-client \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j"$(nproc)" \
+        dom \
         intl \
         mbstring \
         opcache \
         pdo_mysql \
+        simplexml \
+        xml \
+        xmlwriter \
         zip \
     && pecl install apcu \
     && docker-php-ext-enable apcu \

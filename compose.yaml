@@ -1,4 +1,15 @@
 services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: bet_stats_nginx
+    depends_on:
+      - backend
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./backend:/var/www/app:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
   backend:
     build:
       context: ./backend
@@ -7,14 +18,15 @@ services:
     working_dir: /var/www/app
     volumes:
       - ./backend:/var/www/app
+    command: sh -c "if [ -f composer.json ] && [ ! -d vendor ]; then composer install; fi && php-fpm"
     environment:
       APP_ENV: ${APP_ENV:-dev}
       DATABASE_URL: mysql://${MYSQL_USER:-bet_stats}:${MYSQL_PASSWORD:-bet_stats}@db:3306/${MYSQL_DATABASE:-bet_stats}?serverVersion=8.4.0&charset=utf8mb4
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "${BACKEND_FPM_PORT:-9000}:9000"
+    expose:
+      - "9000"
 
   frontend:
     build:
