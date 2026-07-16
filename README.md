@@ -29,6 +29,7 @@ Aktualnie repo zawiera przygotowaną aplikację backendową Symfony 7.4 oraz inf
 
 - Docker
 - Docker Compose Plugin (`docker compose`)
+- opcjonalnie lokalny Node.js 22 do wsparcia edytora i pracy poza Dockerem
 
 ## Uruchomienie
 
@@ -69,6 +70,19 @@ curl http://localhost:8080/api/health
 ```bash
 http://localhost:5173
 ```
+
+## Lokalny Node do edytora
+
+Jeśli edytor zgłasza błędy TypeScript dla frontendu mimo poprawnego działania w Dockerze, doinstaluj lokalnie Node.js 22 i zależności w `frontend/`:
+
+```bash
+nvm use
+rm -rf frontend/node_modules
+cd frontend
+npm install
+```
+
+Repo zawiera plik `.nvmrc` z wersją `22`.
 
 ## Dostępne usługi
 
