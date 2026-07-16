@@ -20,7 +20,7 @@ export default defineConfig({
             return 'forms';
           }
 
-          if (id.includes('react-router')) {
+          if (id.includes('react-router-dom') || id.includes('react-router')) {
             return 'router';
           }
 

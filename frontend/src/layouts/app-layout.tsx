@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 
 import { BrandMark } from '../components/brand-mark';
 import { NavLinkItem } from '../components/nav-link';
@@ -27,8 +27,8 @@ export function AppLayout() {
   const { isOpen, closeMenu, toggleMenu } = useMobileMenu();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_30%),linear-gradient(180deg,_#0f172a_0%,_#020617_100%)] text-slate-100">
-      <div className="mx-auto flex min-h-screen max-w-[1600px]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_30%),linear-gradient(180deg,#0f172a_0%,#020617_100%)] text-slate-100">
+      <div className="mx-auto flex min-h-screen">
         <aside className="hidden w-80 border-r border-white/10 bg-slate-950/60 backdrop-blur lg:block">
           <NavigationPanel />
         </aside>
