@@ -2,6 +2,10 @@ framework:
   secret: '%env(APP_SECRET)%'
   http_method_override: false
   handle_all_throwables: true
+  session:
+    cookie_secure: auto
+    cookie_httponly: true
+    cookie_samesite: lax
 
 when@test:
   framework:

@@ -6,8 +6,9 @@
 - frontend: React + TypeScript + Vite + Tailwind CSS
 - baza danych: MySQL 8.4
 - panel administracyjny: EasyAdmin pod `/admin`
+- autoryzacja: sesja + cookie Symfony
 
-Aktualnie repo zawiera przygotowaną aplikację backendową Symfony 7.4 oraz infrastrukturę Docker. Frontend React i panel EasyAdmin nie są jeszcze instalowane.
+Aktualnie repo zawiera przygotowaną aplikację backendową Symfony 7.4, frontend React oraz infrastrukturę Docker. EasyAdmin i sesyjne logowanie użytkowników są już skonfigurowane.
 
 ## Struktura
 
@@ -85,6 +86,14 @@ npm install
 
 Repo zawiera plik `.nvmrc` z wersją `22`.
 
+## Frontend auth
+
+- frontend posiada stronę `/login`
+- prywatne trasy wymagają aktywnej sesji Symfony
+- sesja jest sprawdzana przez `GET /api/me`
+- klient API korzysta z `credentials: include`
+- w development Vite proxy przekazuje `/api` do backendu, żeby sesyjne cookie działało bez dodatkowego CORS
+
 ## Dostępne usługi
 
 - `nginx` - serwer HTTP publikujący aplikację backend na `http://localhost:8080`
@@ -109,12 +118,27 @@ make health
 make backend-console CMD="cache:clear"
 ```
 
+## Użytkownicy i logowanie
+
+- `POST /api/login` loguje użytkownika na sesji Symfony i zwraca dane użytkownika bez hasła
+- `POST /api/logout` wylogowuje użytkownika
+- `GET /api/me` zwraca aktualnie zalogowanego użytkownika
+- `/admin` wymaga `ROLE_ADMIN`
+- pozostałe endpointy pod `/api` wymagają zalogowanego użytkownika, z wyjątkiem `/api/health` i `/api/login`
+
+Tworzenie pierwszego administratora:
+
+```bash
+docker compose exec backend php bin/console doctrine:migrations:migrate --no-interaction
+docker compose exec backend php bin/console app:user:create-admin admin@example.com strong-password
+```
+
 ## Uwagi
 
 - `backend` montuje katalog `./backend` do `/var/www/app`
 - `nginx` kieruje ruch HTTP do `backend:9000`
 - `frontend` montuje katalog `./frontend` do `/app`
-- frontend korzysta z `VITE_API_URL` i domyślnie odpytuje backend pod `http://localhost:8080`
+- frontend korzysta z `VITE_API_URL` i domyślnie odpytuje backend przez `/api`
 - panel administracyjny jest dostępny pod `http://localhost:8080/admin`
 - assety EasyAdmin są publikowane do `backend/public/bundles/` przez `php bin/console assets:install public`
 - MySQL jest publikowany domyślnie na porcie `3307`, żeby nie kolidować z innymi lokalnymi instancjami na `3306`

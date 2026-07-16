@@ -37,10 +37,11 @@ services:
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/node_modules
-    command: sh -c "if [ -f package.json ]; then npm install && npm run dev -- --host 0.0.0.0; else tail -f /dev/null; fi"
+    command: sh -c "if [ -f package.json ]; then npm run dev -- --host 0.0.0.0; else tail -f /dev/null; fi"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+      VITE_API_URL: ${VITE_API_URL:-/api}
+      VITE_BACKEND_PROXY_TARGET: http://nginx
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
     depends_on:

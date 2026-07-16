@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 
 import { BrandMark } from '../components/brand-mark';
 import { NavLinkItem } from '../components/nav-link';
+import { LogoutButton } from '../components/logout-button';
+import { useAuth } from '../hooks/use-auth';
 import { useMobileMenu } from '../hooks/use-mobile-menu';
 import { navigationItems } from '../routes/navigation';
 
@@ -25,6 +27,7 @@ function NavigationPanel({ onNavigate }: { onNavigate?: () => void }) {
 
 export function AppLayout() {
   const { isOpen, closeMenu, toggleMenu } = useMobileMenu();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_30%),linear-gradient(180deg,#0f172a_0%,#020617_100%)] text-slate-100">
@@ -43,13 +46,19 @@ export function AppLayout() {
                 <p className="text-xs uppercase tracking-[0.4em] text-slate-400">analytics workspace</p>
                 <h1 className="mt-1 text-2xl font-semibold text-white">bet_stats dashboard</h1>
               </div>
-              <button
-                type="button"
-                onClick={toggleMenu}
-                className="inline-flex rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10 lg:hidden"
-              >
-                Menu
-              </button>
+              <div className="flex items-center gap-3">
+                <div className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 lg:inline-flex">
+                  {user?.roles.includes('ROLE_ADMIN') ? 'Admin session' : 'User session'}
+                </div>
+                <LogoutButton />
+                <button
+                  type="button"
+                  onClick={toggleMenu}
+                  className="inline-flex rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10 lg:hidden"
+                >
+                  Menu
+                </button>
+              </div>
             </div>
           </header>
 

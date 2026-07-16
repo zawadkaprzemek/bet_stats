@@ -1,3 +1,3 @@
 export const appEnv = {
-  apiUrl: import.meta.env.VITE_API_URL?.trim() || 'http://localhost:8080',
+  apiUrl: import.meta.env.VITE_API_URL?.trim() || '/api',
 };
