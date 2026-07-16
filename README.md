@@ -64,6 +64,12 @@ make schema-validate
 curl http://localhost:8080/api/health
 ```
 
+6. Frontend jest dostępny pod:
+
+```bash
+http://localhost:5173
+```
+
 ## Dostępne usługi
 
 - `nginx` - serwer HTTP publikujący aplikację backend na `http://localhost:8080`
@@ -93,6 +99,7 @@ make backend-console CMD="cache:clear"
 - `backend` montuje katalog `./backend` do `/var/www/app`
 - `nginx` kieruje ruch HTTP do `backend:9000`
 - `frontend` montuje katalog `./frontend` do `/app`
+- frontend korzysta z `VITE_API_URL` i domyślnie odpytuje backend pod `http://localhost:8080`
 - MySQL jest publikowany domyślnie na porcie `3307`, żeby nie kolidować z innymi lokalnymi instancjami na `3306`
 - hostname `db` działa tylko wewnątrz sieci Docker; komendy `php bin/console` uruchamiaj przez `docker compose exec backend ...` albo targety `make`
 - `make health` sprawdza publiczny endpoint przez hostowy port `APP_PORT` (domyślnie `8080`)
