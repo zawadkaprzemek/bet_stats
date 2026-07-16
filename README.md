@@ -5,6 +5,7 @@
 - backend: PHP 8.4 FPM + Symfony 7
 - frontend: React + TypeScript + Vite + Tailwind CSS
 - baza danych: MySQL 8.4
+- panel administracyjny: EasyAdmin pod `/admin`
 
 Aktualnie repo zawiera przygotowaną aplikację backendową Symfony 7.4 oraz infrastrukturę Docker. Frontend React i panel EasyAdmin nie są jeszcze instalowane.
 
@@ -114,6 +115,8 @@ make backend-console CMD="cache:clear"
 - `nginx` kieruje ruch HTTP do `backend:9000`
 - `frontend` montuje katalog `./frontend` do `/app`
 - frontend korzysta z `VITE_API_URL` i domyślnie odpytuje backend pod `http://localhost:8080`
+- panel administracyjny jest dostępny pod `http://localhost:8080/admin`
+- assety EasyAdmin są publikowane do `backend/public/bundles/` przez `php bin/console assets:install public`
 - MySQL jest publikowany domyślnie na porcie `3307`, żeby nie kolidować z innymi lokalnymi instancjami na `3306`
 - hostname `db` działa tylko wewnątrz sieci Docker; komendy `php bin/console` uruchamiaj przez `docker compose exec backend ...` albo targety `make`
 - `make health` sprawdza publiczny endpoint przez hostowy port `APP_PORT` (domyślnie `8080`)

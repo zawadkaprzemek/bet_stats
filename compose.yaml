@@ -18,7 +18,7 @@ services:
     working_dir: /var/www/app
     volumes:
       - ./backend:/var/www/app
-    command: sh -c "if [ -f composer.json ] && [ ! -d vendor ]; then composer install; fi && php-fpm"
+    command: sh -c "if [ -f composer.json ] && [ ! -d vendor ]; then composer install; fi && php bin/console assets:install public && php-fpm"
     environment:
       APP_ENV: ${APP_ENV:-dev}
       DATABASE_URL: mysql://${MYSQL_USER:-bet_stats}:${MYSQL_PASSWORD:-bet_stats}@db:3306/${MYSQL_DATABASE:-bet_stats}?serverVersion=8.4.0&charset=utf8mb4

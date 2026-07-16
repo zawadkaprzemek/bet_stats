@@ -1,0 +1,21 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Bet Stats{% endblock %}
+
+{% block page_actions %}
+    <a class="btn btn-secondary" href="{{ path('api_health') }}" target="_blank" rel="noopener noreferrer">
+        API Health
+    </a>
+{% endblock %}
+
+{% block main %}
+    <section class="content-panel">
+        <div class="content-panel-body">
+            <h2>Panel administracyjny jest gotowy</h2>
+            <p>
+                EasyAdmin został skonfigurowany dla projektu <strong>bet_stats</strong>.
+                CRUD-y i encje domenowe zostaną dodane w kolejnych krokach.
+            </p>
+        </div>
+    </section>
+{% endblock %}
