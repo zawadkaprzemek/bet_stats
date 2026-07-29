@@ -115,7 +115,17 @@ make composer-install
 make db-create
 make schema-validate
 make health
+make backend-test
+make frontend-test
+make test
 make backend-console CMD="cache:clear"
+```
+
+Testy backendu używają osobnej bazy `MYSQL_TEST_DATABASE` (domyślnie `bet_stats_test`).
+Jeśli wolumen MySQL został utworzony przed dodaniem tej konfiguracji, jednorazowo wykonaj:
+
+```bash
+docker compose exec db sh -lc 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`bet_stats_test\`; GRANT ALL PRIVILEGES ON \`bet_stats_test\`.* TO '\''bet_stats'\''@'\''%'\''; FLUSH PRIVILEGES;"'
 ```
 
 ## Użytkownicy i logowanie
@@ -123,6 +133,9 @@ make backend-console CMD="cache:clear"
 - `POST /api/login` loguje użytkownika na sesji Symfony i zwraca dane użytkownika bez hasła
 - `POST /api/logout` wylogowuje użytkownika
 - `GET /api/me` zwraca aktualnie zalogowanego użytkownika
+- `GET /api/sports` zwraca aktywne sporty posortowane po `sortOrder`, a potem alfabetycznie
+- `GET /api/competitions?sport={id}` zwraca aktywne rozgrywki globalne i prywatne aktualnie zalogowanego użytkownika dla wybranego sportu
+- `POST /api/competitions` tworzy prywatną rozgrywkę aktualnie zalogowanego użytkownika
 - `/admin` wymaga `ROLE_ADMIN`
 - pozostałe endpointy pod `/api` wymagają zalogowanego użytkownika, z wyjątkiem `/api/health` i `/api/login`
 
@@ -131,6 +144,7 @@ Tworzenie pierwszego administratora:
 ```bash
 docker compose exec backend php bin/console doctrine:migrations:migrate --no-interaction
 docker compose exec backend php bin/console app:user:create-admin admin@example.com strong-password
+docker compose exec backend php bin/console doctrine:fixtures:load --group=sport --no-interaction
 ```
 
 ## Uwagi

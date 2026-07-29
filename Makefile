@@ -1,7 +1,7 @@
 COMPOSE = docker compose
 APP_PORT ?= 8080
 
-.PHONY: up down build restart logs backend-shell frontend-shell backend-console composer-install db-create schema-validate health
+.PHONY: up down build restart logs backend-shell frontend-shell backend-console composer-install db-create schema-validate health backend-test frontend-test test
 
 up:
 	$(COMPOSE) up -d
@@ -39,3 +39,12 @@ schema-validate:
 
 health:
 	python3 -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:$(APP_PORT)/api/health').read().decode())"
+
+backend-test:
+	$(COMPOSE) exec backend composer run tests
+
+frontend-test:
+	$(COMPOSE) run --rm frontend npm run lint
+	$(COMPOSE) run --rm frontend npm run build
+
+test: backend-test frontend-test

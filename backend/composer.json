@@ -29,6 +29,10 @@
         "twig/twig": "^3.23"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "phpunit/phpunit": "^11.5",
+        "symfony/browser-kit": "7.4.*",
+        "symfony/css-selector": "7.4.*",
         "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.61",
         "symfony/web-profiler-bundle": "7.4.*"
@@ -44,6 +48,16 @@
         }
     },
     "scripts": {
+        "phpunit": "APP_ENV=test php vendor/bin/phpunit -c phpunit.xml.dist",
+        "tests:warmup": [
+            "APP_ENV=test php bin/console cache:warmup",
+            "APP_ENV=test php bin/console doctrine:database:create --if-not-exists --no-interaction",
+            "APP_ENV=test php bin/console doctrine:migrations:migrate --no-interaction"
+        ],
+        "tests": [
+            "@tests:warmup",
+            "@phpunit"
+        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
