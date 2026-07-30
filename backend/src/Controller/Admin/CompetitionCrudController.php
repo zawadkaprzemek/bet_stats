@@ -3,16 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Competition;
+use App\Entity\Region;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Intl\Countries;
 
 final class CompetitionCrudController extends AbstractCrudController
 {
@@ -36,16 +35,21 @@ final class CompetitionCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name');
         yield AssociationField::new('sport');
-        yield ChoiceField::new('countryCode', 'Country')
+        yield AssociationField::new('region')
             ->setRequired(false)
-            ->setChoices(array_flip(Countries::getNames('pl')))
-            ->setFormTypeOption('placeholder', 'Międzynarodowe')
+            ->setFormTypeOption('placeholder', 'No region')
+            ->setFormTypeOption('choice_label', 'name')
+            ->setQueryBuilder(static fn ($queryBuilder) => $queryBuilder
+                ->orderBy('entity.sortOrder', 'ASC')
+                ->addOrderBy('entity.name', 'ASC'))
             ->formatValue(static function ($value): string {
-                if (!is_string($value) || '' === $value) {
-                    return 'Międzynarodowe';
+                if (!$value instanceof Region) {
+                    return 'No region';
                 }
 
-                return Countries::getName($value, 'pl') ?? $value;
+                $emoji = $value->getEmoji();
+
+                return null === $emoji ? $value->getName() : sprintf('%s %s', $emoji, $value->getName());
             });
         yield BooleanField::new('isActive', 'Active');
         yield AssociationField::new('owner')->hideOnForm();

@@ -30,6 +30,10 @@ class Competition
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?User $owner = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Region $region = null;
+
     #[Assert\NotBlank(message: 'Competition name is required.')]
     #[Assert\Length(
         min: 2,
@@ -39,10 +43,6 @@ class Competition
     )]
     #[ORM\Column(length: 120)]
     private string $name = '';
-
-    #[Assert\Country(message: 'Country code must be a valid ISO 3166-1 alpha-2 code.')]
-    #[ORM\Column(length: 2, nullable: true)]
-    private ?string $countryCode = null;
 
     #[ORM\Column]
     private bool $isActive = true;
@@ -94,15 +94,14 @@ class Competition
         return $this;
     }
 
-    public function getCountryCode(): ?string
+    public function getRegion(): ?Region
     {
-        return $this->countryCode;
+        return $this->region;
     }
 
-    public function setCountryCode(?string $countryCode): self
+    public function setRegion(?Region $region): self
     {
-        $countryCode = null === $countryCode ? null : strtoupper(trim($countryCode));
-        $this->countryCode = '' === $countryCode ? null : $countryCode;
+        $this->region = $region;
 
         return $this;
     }

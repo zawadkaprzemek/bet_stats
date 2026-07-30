@@ -7,7 +7,7 @@ use App\Entity\Sport;
 final class SportViewFactory
 {
     /**
-     * @return array{id:int, name:string, slug:string, icon:string}
+     * @return array{id:int, name:string, slug:string, emoji:?string}
      */
     public function create(Sport $sport): array
     {
@@ -15,7 +15,7 @@ final class SportViewFactory
             'id' => $sport->getId(),
             'name' => $sport->getName(),
             'slug' => $sport->getSlug(),
-            'icon' => $sport->getIcon(),
+            'emoji' => $sport->getEmoji(),
         ];
     }
 }

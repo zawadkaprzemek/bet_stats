@@ -22,8 +22,8 @@ class Sport
     #[ORM\Column(length: 120, unique: true)]
     private string $slug = '';
 
-    #[ORM\Column(length: 120)]
-    private string $icon = '';
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $emoji = null;
 
     #[ORM\Column]
     private bool $isActive = true;
@@ -66,14 +66,15 @@ class Sport
         return $this;
     }
 
-    public function getIcon(): string
+    public function getEmoji(): ?string
     {
-        return $this->icon;
+        return $this->emoji;
     }
 
-    public function setIcon(string $icon): self
+    public function setEmoji(?string $emoji): self
     {
-        $this->icon = trim($icon);
+        $emoji = null === $emoji ? null : trim($emoji);
+        $this->emoji = '' === $emoji ? null : $emoji;
 
         return $this;
     }

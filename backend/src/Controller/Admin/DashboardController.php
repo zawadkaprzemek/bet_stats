@@ -28,6 +28,8 @@ final class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-chart-line');
         yield MenuItem::linkTo(SportCrudController::class, 'Sports', 'fa fa-futbol');
+        yield MenuItem::linkTo(RegionCrudController::class, 'Regions', 'fa fa-globe');
+        yield MenuItem::linkTo(BookmakerCrudController::class, 'Bookmakers', 'fa fa-building');
         yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fa fa-trophy');
         yield MenuItem::linkToRoute('API Health', 'fa fa-heartbeat', 'api_health');
     }

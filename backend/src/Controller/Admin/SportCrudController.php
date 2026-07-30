@@ -40,7 +40,7 @@ final class SportCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name');
         yield TextField::new('slug');
-        yield TextField::new('icon');
+        yield TextField::new('emoji');
         yield BooleanField::new('isActive', 'Active');
         yield IntegerField::new('sortOrder', 'Sort order');
         yield DateTimeField::new('createdAt')->hideOnForm();

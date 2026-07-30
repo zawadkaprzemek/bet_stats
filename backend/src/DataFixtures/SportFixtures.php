@@ -17,23 +17,23 @@ final class SportFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         $sports = [
-            ['Piłka nożna', 'pilka-nozna', 'football', 10],
-            ['Tenis', 'tenis', 'tennis', 20],
-            ['Koszykówka', 'koszykowka', 'basketball', 30],
-            ['Siatkówka', 'siatkowka', 'volleyball', 40],
-            ['Hokej', 'hokej', 'hockey-puck', 50],
-            ['Piłka ręczna', 'pilka-reczna', 'handball', 60],
-            ['MMA', 'mma', 'octagon', 70],
-            ['Boks', 'boks', 'boxing-glove', 80],
-            ['Esport', 'esport', 'gamepad', 90],
+            ['Piłka nożna', 'pilka-nozna', '⚽', 10],
+            ['Tenis', 'tenis', '🎾', 20],
+            ['Koszykówka', 'koszykowka', '🏀', 30],
+            ['Siatkówka', 'siatkowka', '🏐', 40],
+            ['Hokej', 'hokej', '🏒', 50],
+            ['Piłka ręczna', 'pilka-reczna', '🤾', 60],
+            ['MMA', 'mma', '🥋', 70],
+            ['Boks', 'boks', '🥊', 80],
+            ['Esport', 'esport', '🎮', 90],
         ];
 
-        foreach ($sports as [$name, $slug, $icon, $sortOrder]) {
+        foreach ($sports as [$name, $slug, $emoji, $sortOrder]) {
             $sport = new Sport();
             $sport
                 ->setName($name)
                 ->setSlug($slug)
-                ->setIcon($icon)
+                ->setEmoji($emoji)
                 ->setIsActive(true)
                 ->setSortOrder($sortOrder);
 

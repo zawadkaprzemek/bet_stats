@@ -1,13 +1,15 @@
+import type { Region } from './region';
+
 export type Competition = {
   id: number;
   sportId: number;
   name: string;
-  countryCode: string | null;
+  region: Region | null;
   isGlobal: boolean;
 };
 
 export type CreateCompetitionInput = {
   sportId: number;
   name: string;
-  countryCode?: string | null;
+  regionId?: number | null;
 };

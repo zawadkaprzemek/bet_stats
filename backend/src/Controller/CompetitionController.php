@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Api\CompetitionViewFactory;
-use App\Entity\Competition;
 use App\Entity\User;
 use App\Repository\CompetitionRepository;
+use App\Repository\RegionRepository;
 use App\Repository\SportRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CompetitionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,9 +56,9 @@ final class CompetitionController extends AbstractController
     public function create(
         Request $request,
         SportRepository $sportRepository,
-        CompetitionRepository $competitionRepository,
+        RegionRepository $regionRepository,
+        CompetitionService $competitionService,
         CompetitionViewFactory $competitionViewFactory,
-        EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
     ): JsonResponse {
         $user = $this->getUser();
@@ -68,7 +68,7 @@ final class CompetitionController extends AbstractController
         }
 
         try {
-            /** @var array{name?:mixed, sportId?:mixed, countryCode?:mixed} $payload */
+            /** @var array{name?:mixed, sportId?:mixed, regionId?:mixed} $payload */
             $payload = $request->toArray();
         } catch (\JsonException) {
             return $this->json(['message' => 'Invalid JSON payload.'], JsonResponse::HTTP_BAD_REQUEST);
@@ -76,7 +76,7 @@ final class CompetitionController extends AbstractController
 
         $name = is_string($payload['name'] ?? null) ? $payload['name'] : '';
         $sportId = $payload['sportId'] ?? null;
-        $countryCode = is_string($payload['countryCode'] ?? null) ? $payload['countryCode'] : null;
+        $regionId = $payload['regionId'] ?? null;
 
         if (!is_int($sportId) && !(is_string($sportId) && ctype_digit($sportId))) {
             return $this->json(['message' => 'Valid sportId is required.'], JsonResponse::HTTP_BAD_REQUEST);
@@ -91,19 +91,30 @@ final class CompetitionController extends AbstractController
             return $this->json(['message' => 'Selected sport is invalid.'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if ($competitionRepository->userHasCompetitionWithNameForSport($user, $sport, $name)) {
+        if ($competitionService->userHasCompetitionWithNameForSport($user, $sport, $name)) {
             return $this->json([
                 'message' => 'Competition with this name already exists for this sport.',
             ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $competition = new Competition();
-        $competition
-            ->setSport($sport)
-            ->setOwner($user)
-            ->setName($name)
-            ->setCountryCode($countryCode)
-            ->setIsActive(true);
+        if (null !== $regionId && !is_int($regionId) && !(is_string($regionId) && ctype_digit($regionId))) {
+            return $this->json(['message' => 'Valid regionId is required.'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $region = null;
+
+        if (null !== $regionId) {
+            $region = $regionRepository->findOneBy([
+                'id' => (int) $regionId,
+                'isActive' => true,
+            ]);
+
+            if (null === $region) {
+                return $this->json(['message' => 'Selected region is invalid.'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        $competition = $competitionService->createForUser($user, $sport, $name, $region);
 
         $violations = $validator->validate($competition);
 
@@ -113,8 +124,7 @@ final class CompetitionController extends AbstractController
             ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $entityManager->persist($competition);
-        $entityManager->flush();
+        $competitionService->save($competition);
 
         return $this->json(
             $competitionViewFactory->create($competition),
