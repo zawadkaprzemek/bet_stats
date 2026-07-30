@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use function Symfony\Component\Translation\t;
 
 final class SportCrudController extends AbstractCrudController
 {
@@ -22,8 +23,8 @@ final class SportCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Sport')
-            ->setEntityLabelInPlural('Sports')
+            ->setEntityLabelInSingular(t('admin.sport.singular'))
+            ->setEntityLabelInPlural(t('admin.sport.plural'))
             ->setDefaultSort([
                 'sortOrder' => 'ASC',
                 'name' => 'ASC',
@@ -41,8 +42,8 @@ final class SportCrudController extends AbstractCrudController
         yield TextField::new('name');
         yield TextField::new('slug');
         yield TextField::new('emoji');
-        yield BooleanField::new('isActive', 'Active');
-        yield IntegerField::new('sortOrder', 'Sort order');
+        yield BooleanField::new('isActive', t('admin.field.is_active'));
+        yield IntegerField::new('sortOrder', t('admin.field.sort_order'));
         yield DateTimeField::new('createdAt')->hideOnForm();
         yield DateTimeField::new('updatedAt')->hideOnForm();
     }

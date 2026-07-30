@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(name: 'idx_competition_sport_active', columns: ['sport_id', 'is_active'])]
 #[ORM\Index(name: 'idx_competition_owner', columns: ['owner_id'])]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['sport', 'owner', 'name'], message: 'Competition with this name already exists for this sport.')]
+#[UniqueEntity(fields: ['sport', 'owner', 'name'], message: 'competition.validation.name_unique')]
 class Competition
 {
     #[ORM\Id]
@@ -34,12 +34,12 @@ class Competition
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Region $region = null;
 
-    #[Assert\NotBlank(message: 'Competition name is required.')]
+    #[Assert\NotBlank(message: 'competition.validation.name_required')]
     #[Assert\Length(
         min: 2,
         max: 120,
-        minMessage: 'Competition name must be at least {{ limit }} characters long.',
-        maxMessage: 'Competition name cannot be longer than {{ limit }} characters.'
+        minMessage: 'competition.validation.name_too_short',
+        maxMessage: 'competition.validation.name_too_long'
     )]
     #[ORM\Column(length: 120)]
     private string $name = '';

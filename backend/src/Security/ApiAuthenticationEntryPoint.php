@@ -13,12 +13,12 @@ final class ApiAuthenticationEntryPoint implements AuthenticationEntryPointInter
     {
         if (str_starts_with($request->getPathInfo(), '/api')) {
             return new JsonResponse([
-                'message' => 'Authentication required.',
+                'message' => 'Wymagane jest uwierzytelnienie.',
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         return new JsonResponse([
-            'message' => 'Authentication required.',
+            'message' => 'Wymagane jest uwierzytelnienie.',
         ], JsonResponse::HTTP_UNAUTHORIZED);
     }
 }

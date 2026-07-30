@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BookmakerRepository::class)]
 #[ORM\Table(name: 'app_bookmaker')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['name'], message: 'Bookmaker with this name already exists.')]
-#[UniqueEntity(fields: ['slug'], message: 'Bookmaker with this slug already exists.')]
+#[UniqueEntity(fields: ['name'], message: 'bookmaker.validation.name_unique')]
+#[UniqueEntity(fields: ['slug'], message: 'bookmaker.validation.slug_unique')]
 class Bookmaker
 {
     #[ORM\Id]
@@ -38,11 +38,11 @@ class Bookmaker
     #[ORM\Column]
     private bool $isLegal = true;
 
-    #[Assert\PositiveOrZero(message: 'Default tax percent cannot be negative.')]
+    #[Assert\PositiveOrZero(message: 'bookmaker.validation.default_tax_non_negative')]
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private string $defaultTaxPercent = '0.00';
 
-    #[Assert\Url(message: 'Website must be a valid URL.')]
+    #[Assert\Url(message: 'bookmaker.validation.website_invalid')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $website = null;
 

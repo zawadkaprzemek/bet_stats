@@ -22,6 +22,12 @@ const LoginPage = lazy(async () => {
   return { default: module.LoginPage };
 });
 
+const SettingsPage = lazy(async () => {
+  const module = await import('../pages/settings-page');
+
+  return { default: module.SettingsPage };
+});
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -52,12 +58,7 @@ export function AppRoutes() {
           />
           <Route
             path="/ustawienia"
-            element={
-              <PlaceholderPage
-                title="Ustawienia"
-                description="Space reserved for backend integrations, preferences and system configuration."
-              />
-            }
+            element={<SettingsPage />}
           />
         </Route>
       </Route>

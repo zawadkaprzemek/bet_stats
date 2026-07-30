@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use function Symfony\Component\Translation\t;
 
 final class CompetitionCrudController extends AbstractCrudController
 {
@@ -23,8 +24,8 @@ final class CompetitionCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Competition')
-            ->setEntityLabelInPlural('Competitions')
+            ->setEntityLabelInSingular(t('admin.competition.singular'))
+            ->setEntityLabelInPlural(t('admin.competition.plural'))
             ->setDefaultSort([
                 'name' => 'ASC',
             ]);
@@ -37,21 +38,21 @@ final class CompetitionCrudController extends AbstractCrudController
         yield AssociationField::new('sport');
         yield AssociationField::new('region')
             ->setRequired(false)
-            ->setFormTypeOption('placeholder', 'No region')
+            ->setFormTypeOption('placeholder', t('admin.competition.no_region'))
             ->setFormTypeOption('choice_label', 'name')
             ->setQueryBuilder(static fn ($queryBuilder) => $queryBuilder
                 ->orderBy('entity.sortOrder', 'ASC')
                 ->addOrderBy('entity.name', 'ASC'))
             ->formatValue(static function ($value): string {
                 if (!$value instanceof Region) {
-                    return 'No region';
+                    return (string) t('admin.competition.no_region');
                 }
 
                 $emoji = $value->getEmoji();
 
                 return null === $emoji ? $value->getName() : sprintf('%s %s', $emoji, $value->getName());
             });
-        yield BooleanField::new('isActive', 'Active');
+        yield BooleanField::new('isActive', t('admin.field.is_active'));
         yield AssociationField::new('owner')->hideOnForm();
         yield DateTimeField::new('createdAt')->hideOnForm();
         yield DateTimeField::new('updatedAt')->hideOnForm();

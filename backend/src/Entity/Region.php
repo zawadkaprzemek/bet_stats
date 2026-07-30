@@ -10,8 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
 #[ORM\Table(name: 'app_region')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['name'], message: 'Region with this name already exists.')]
-#[UniqueEntity(fields: ['slug'], message: 'Region with this slug already exists.')]
+#[UniqueEntity(fields: ['name'], message: 'region.validation.name_unique')]
+#[UniqueEntity(fields: ['slug'], message: 'region.validation.slug_unique')]
 class Region
 {
     #[ORM\Id]

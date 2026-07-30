@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use function Symfony\Component\Translation\t;
 
 final class RegionCrudController extends AbstractCrudController
 {
@@ -21,8 +22,8 @@ final class RegionCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Region')
-            ->setEntityLabelInPlural('Regions')
+            ->setEntityLabelInSingular(t('admin.region.singular'))
+            ->setEntityLabelInPlural(t('admin.region.plural'))
             ->setDefaultSort([
                 'sortOrder' => 'ASC',
                 'name' => 'ASC',
@@ -35,8 +36,8 @@ final class RegionCrudController extends AbstractCrudController
         yield TextField::new('name');
         yield TextField::new('slug');
         yield TextField::new('emoji');
-        yield IntegerField::new('sortOrder', 'Sort order');
-        yield BooleanField::new('isActive', 'Active');
+        yield IntegerField::new('sortOrder', t('admin.field.sort_order'));
+        yield BooleanField::new('isActive', t('admin.field.is_active'));
         yield DateTimeField::new('createdAt')->hideOnForm();
         yield DateTimeField::new('updatedAt')->hideOnForm();
     }

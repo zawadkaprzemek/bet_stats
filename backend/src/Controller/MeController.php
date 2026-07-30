@@ -16,7 +16,7 @@ final class MeController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => 'Authentication required.'], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         return $this->json($userViewFactory->create($user));

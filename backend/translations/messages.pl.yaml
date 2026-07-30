@@ -1,0 +1,70 @@
+api:
+  auth_required: 'Wymagane jest uwierzytelnienie.'
+  invalid_json: 'Nieprawidłowy payload JSON.'
+
+ID: 'ID'
+Name: 'Nazwa'
+Slug: 'Slug'
+Emoji: 'Emoji'
+Color: 'Kolor'
+Created At: 'Utworzono'
+Updated At: 'Zaktualizowano'
+Sport: 'Sport'
+Region: 'Region'
+
+sport:
+  api:
+    not_found: 'Nie znaleziono sportu.'
+
+competition:
+  api:
+    sport_query_required: 'Wymagany jest poprawny parametr zapytania sport.'
+    sport_id_required: 'Wymagane jest poprawne sportId.'
+    sport_invalid: 'Wybrany sport jest nieprawidłowy.'
+    region_id_required: 'Wymagane jest poprawne regionId.'
+    region_invalid: 'Wybrany region jest nieprawidłowy.'
+  validation:
+    name_unique: 'Rozgrywki o tej nazwie już istnieją dla tego sportu.'
+
+tag:
+  api:
+    not_found: 'Nie znaleziono tagu.'
+  validation:
+    name_unique: 'Tag o tej nazwie już istnieje.'
+    slug_unique: 'Tag o tym slugu już istnieje.'
+
+admin:
+  dashboard:
+    title: 'Bet Stats'
+  menu:
+    dashboard: 'Dashboard'
+    sports: 'Sporty'
+    regions: 'Regiony'
+    bookmakers: 'Bukmacherzy'
+    tags: 'Tagi'
+    competitions: 'Rozgrywki'
+    api_health: 'Stan API'
+    sign_out: 'Wyloguj'
+  field:
+    is_active: 'Aktywny'
+    sort_order: 'Kolejność'
+    is_legal: 'Legalny'
+    default_tax_percent: 'Domyślny podatek %'
+    website: 'Strona WWW'
+    is_system: 'Systemowy'
+  sport:
+    singular: 'Sport'
+    plural: 'Sporty'
+  region:
+    singular: 'Region'
+    plural: 'Regiony'
+  bookmaker:
+    singular: 'Bukmacher'
+    plural: 'Bukmacherzy'
+  competition:
+    singular: 'Rozgrywka'
+    plural: 'Rozgrywki'
+    no_region: 'Brak regionu'
+  tag:
+    singular: 'Tag'
+    plural: 'Tagi'

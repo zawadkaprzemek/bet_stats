@@ -1,0 +1,29 @@
+competition:
+  validation:
+    name_required: 'Nazwa rozgrywek jest wymagana.'
+    name_too_short: 'Nazwa rozgrywek musi mieć co najmniej {{ limit }} znaki.'
+    name_too_long: 'Nazwa rozgrywek nie może być dłuższa niż {{ limit }} znaków.'
+    name_unique: 'Rozgrywki o tej nazwie już istnieją dla tego sportu.'
+
+region:
+  validation:
+    name_unique: 'Region o tej nazwie już istnieje.'
+    slug_unique: 'Region o tym slugu już istnieje.'
+
+bookmaker:
+  validation:
+    name_unique: 'Bukmacher o tej nazwie już istnieje.'
+    slug_unique: 'Bukmacher o tym slugu już istnieje.'
+    default_tax_non_negative: 'Domyślny podatek nie może być ujemny.'
+    website_invalid: 'Adres strony WWW musi być poprawnym URL-em.'
+
+tag:
+  validation:
+    name_required: 'Nazwa tagu jest wymagana.'
+    name_too_short: 'Nazwa tagu musi mieć co najmniej {{ limit }} znaki.'
+    name_too_long: 'Nazwa tagu nie może być dłuższa niż {{ limit }} znaków.'
+    slug_required: 'Slug tagu jest wymagany.'
+    slug_too_short: 'Slug tagu musi mieć co najmniej {{ limit }} znaki.'
+    slug_too_long: 'Slug tagu nie może być dłuższy niż {{ limit }} znaków.'
+    slug_unique: 'Tag o tym slugu już istnieje.'
+    color_invalid: 'Kolor tagu musi być poprawnym kolorem HEX.'

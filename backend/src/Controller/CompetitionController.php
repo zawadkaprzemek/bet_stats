@@ -26,13 +26,13 @@ final class CompetitionController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => 'Authentication required.'], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         $sportId = $request->query->get('sport');
 
         if (!is_string($sportId) || '' === trim($sportId) || !ctype_digit($sportId)) {
-            return $this->json(['message' => 'Valid sport query parameter is required.'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->trans('competition.api.sport_query_required')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $sport = $sportRepository->findOneBy([
@@ -41,7 +41,7 @@ final class CompetitionController extends AbstractController
         ]);
 
         if (null === $sport) {
-            return $this->json(['message' => 'Sport not found.'], JsonResponse::HTTP_NOT_FOUND);
+            return $this->json(['message' => $this->trans('sport.api.not_found')], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $competitions = array_map(
@@ -64,14 +64,14 @@ final class CompetitionController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => 'Authentication required.'], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         try {
             /** @var array{name?:mixed, sportId?:mixed, regionId?:mixed} $payload */
             $payload = $request->toArray();
         } catch (\JsonException) {
-            return $this->json(['message' => 'Invalid JSON payload.'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->trans('api.invalid_json')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $name = is_string($payload['name'] ?? null) ? $payload['name'] : '';
@@ -79,7 +79,7 @@ final class CompetitionController extends AbstractController
         $regionId = $payload['regionId'] ?? null;
 
         if (!is_int($sportId) && !(is_string($sportId) && ctype_digit($sportId))) {
-            return $this->json(['message' => 'Valid sportId is required.'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->trans('competition.api.sport_id_required')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $sport = $sportRepository->findOneBy([
@@ -88,17 +88,17 @@ final class CompetitionController extends AbstractController
         ]);
 
         if (null === $sport) {
-            return $this->json(['message' => 'Selected sport is invalid.'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json(['message' => $this->trans('competition.api.sport_invalid')], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if ($competitionService->userHasCompetitionWithNameForSport($user, $sport, $name)) {
             return $this->json([
-                'message' => 'Competition with this name already exists for this sport.',
+                'message' => $this->trans('competition.validation.name_unique'),
             ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if (null !== $regionId && !is_int($regionId) && !(is_string($regionId) && ctype_digit($regionId))) {
-            return $this->json(['message' => 'Valid regionId is required.'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->trans('competition.api.region_id_required')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $region = null;
@@ -110,7 +110,7 @@ final class CompetitionController extends AbstractController
             ]);
 
             if (null === $region) {
-                return $this->json(['message' => 'Selected region is invalid.'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->json(['message' => $this->trans('competition.api.region_invalid')], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
