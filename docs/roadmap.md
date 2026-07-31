@@ -149,7 +149,12 @@ Scope:
 
 Status:
 
-- planned
+- in progress
+
+Notes:
+
+- dashboard summary MVP is implemented through `GET /api/dashboard/summary`
+- grouped statistics, charts, rankings, and advanced analytics remain for later stages
 
 ### 10. Dashboard
 
@@ -161,7 +166,12 @@ Scope:
 
 Status:
 
-- planned
+- in progress
+
+Notes:
+
+- summary cards and reusable dashboard filters are implemented
+- charts, rankings, and advanced analytics are intentionally deferred
 
 ## Suggested Delivery Order
 

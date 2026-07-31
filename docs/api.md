@@ -177,3 +177,69 @@ Settlement rules:
 - `GET /api/competitions`
 - `GET /api/competitions?sport={id}`
 - `GET /api/tags`
+
+## Dashboard Summary
+
+### Summary
+
+`GET /api/dashboard/summary`
+
+Returns summary statistics for the authenticated user only.
+
+Supported query parameters:
+
+- `dateFrom`
+- `dateTo`
+- `bookmakerId`
+- `sportId`
+- `competitionId`
+- `tagId`
+- `status`
+
+Notes:
+
+- all filters are optional
+- `dateFrom` and `dateTo` filter by `placedAt`
+- `dateTo` accepts a date-only value and is treated as the end of that day
+- pending bet slips affect only `totalBetSlips` and `pendingBetSlips`
+- settled bet slips affect `totalProfit`, `roi`, `winRate`, and streaks
+- `totalStake`, `averageStake`, and `averageOdds` are calculated across all matched bet slips
+- decimal financial and percentage values are returned as strings
+
+Response:
+
+```json
+{
+  "summary": {
+    "totalBetSlips": 156,
+    "settledBetSlips": 140,
+    "pendingBetSlips": 16,
+    "totalStake": "3850.00",
+    "totalProfit": "742.50",
+    "roi": "19.29",
+    "winRate": "54.29",
+    "averageStake": "27.50",
+    "averageOdds": "3.410",
+    "currentWinningStreak": 4,
+    "currentLosingStreak": 0,
+    "bestWinningStreak": 11,
+    "worstLosingStreak": 6
+  }
+}
+```
+
+Calculated fields:
+
+- `totalBetSlips`: all matched bet slips
+- `settledBetSlips`: matched bet slips with a settled status
+- `pendingBetSlips`: matched bet slips with `pending` status
+- `totalStake`: sum of `stake` across all matched bet slips
+- `totalProfit`: realized profit across settled bet slips using existing bet slip business rules
+- `roi`: total settled cash profit divided by total settled cash stake
+- `winRate`: won bet slips divided by settled bet slips
+- `averageStake`: average `stake` across all matched bet slips
+- `averageOdds`: average `totalOdds` across all matched bet slips
+- `currentWinningStreak`: current consecutive run of settled `won` results
+- `currentLosingStreak`: current consecutive run of settled `lost` results
+- `bestWinningStreak`: longest consecutive run of settled `won` results
+- `worstLosingStreak`: longest consecutive run of settled `lost` results
