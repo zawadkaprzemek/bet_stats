@@ -63,6 +63,55 @@ Current implementation note:
 - `Competition` does not yet reference `Region`
 - uniqueness is currently enforced per `sport + owner + name`
 
+## Bet Slip
+
+- `BetSlip` represents one whole bookmaker coupon.
+- The application does not persist individual selections or events.
+- Users enter one free-text description for the entire coupon.
+- `name` is optional and may be empty.
+- `description` is required and normalized for surrounding whitespace.
+- `BetSlip` belongs to exactly one user.
+- Users may only access and mutate their own bet slips.
+- `BetSlip` belongs to exactly one bookmaker.
+- bookmaker tax is snapshotted into `taxPercent` on the bet slip and is not recalculated from the current bookmaker configuration later
+- `BetSlip` may have zero, one, or many competitions
+- assigned competitions may span multiple sports
+- `BetSlip` may have zero, one, or many tags
+
+## Bet Slip Financial Conventions
+
+- `predictedPayout`, `profit`, and `roi` are calculated fields and are not persisted
+- calculations live in a dedicated backend calculator service
+- money is stored as decimal strings in the API
+
+Predicted payout:
+
+- cash: `taxedStake * totalOdds`
+- freebet: `taxedStake * (totalOdds - 1)`
+- bonus: temporary convention matches freebet behavior until a stricter bonus rule is defined
+
+Profit:
+
+- pending bet slips have no realised profit
+- cash stake: `actualPayout - stake`
+- freebet and bonus stake: temporary convention treats realised profit as `actualPayout`, because promotional credit is not counted as cash turnover in user statistics
+
+ROI:
+
+- ROI is returned only for settled cash bet slips
+- ROI denominator is the cash stake
+- freebet and bonus slips return `null` ROI because the denominator is not considered meaningful under the current convention
+
+## Bet Slip Settlement Rules
+
+- `pending` requires `actualPayout = null` and `settledAt = null`
+- `won` requires positive payout and a settlement timestamp
+- when a won slip is settled without explicit payout, the backend uses the predicted payout
+- `lost` forces `actualPayout = 0`
+- `void` defaults payout to the original stake but still allows manual override
+- `cashout` and `partial_cashout` require non-negative payout
+- changing a bet slip back to `pending` clears settlement fields
+
 ## Global Dictionaries
 
 Each global dictionary should contain these fields:
@@ -125,6 +174,10 @@ Current implementation note:
 
 - the current codebase still contains competition creation and validation flow directly in the controller
 - this should be moved into dedicated services as the domain expands
+
+Bet slip note:
+
+- the bet slip module follows the target service-based pattern and should be used as the reference direction for future transactional modules
 
 ## API Rules
 

@@ -84,4 +84,22 @@ final class TagRepository extends ServiceEntityRepository
 
         return null !== $queryBuilder->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param list<int> $tagIds
+     *
+     * @return list<Tag>
+     */
+    public function findVisibleByIdsForUser(User $owner, array $tagIds): array
+    {
+        return $this->createQueryBuilder('tag')
+            ->andWhere('tag.id IN (:ids)')
+            ->andWhere('(tag.isSystem = :isSystem OR tag.owner = :owner)')
+            ->setParameter('ids', $tagIds)
+            ->setParameter('isSystem', true)
+            ->setParameter('owner', $owner)
+            ->orderBy('tag.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

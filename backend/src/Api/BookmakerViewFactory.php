@@ -7,7 +7,7 @@ use App\Entity\Bookmaker;
 final class BookmakerViewFactory
 {
     /**
-     * @return array{id:int, name:string, slug:string, emoji:?string}
+     * @return array{id:int, name:string, slug:string, emoji:?string, defaultTaxPercent:string}
      */
     public function create(Bookmaker $bookmaker): array
     {
@@ -16,6 +16,7 @@ final class BookmakerViewFactory
             'name' => $bookmaker->getName(),
             'slug' => $bookmaker->getSlug(),
             'emoji' => $bookmaker->getEmoji(),
+            'defaultTaxPercent' => $bookmaker->getDefaultTaxPercent(),
         ];
     }
 }

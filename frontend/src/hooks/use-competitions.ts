@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createCompetition, fetchCompetitions } from '../api/competitions';
+import { createCompetition, fetchCompetitions, fetchVisibleCompetitions } from '../api/competitions';
 import type { Competition, CreateCompetitionInput } from '../types/competition';
 
 export function competitionsQueryKey(sportId: number) {
@@ -9,9 +9,8 @@ export function competitionsQueryKey(sportId: number) {
 
 export function useCompetitions(sportId: number | null) {
   return useQuery({
-    queryKey: sportId === null ? ['competitions', 'idle'] : competitionsQueryKey(sportId),
-    queryFn: () => fetchCompetitions(sportId as number),
-    enabled: sportId !== null,
+    queryKey: sportId === null ? ['competitions', 'all'] : competitionsQueryKey(sportId),
+    queryFn: () => (sportId === null ? fetchVisibleCompetitions() : fetchCompetitions(sportId)),
     staleTime: 60_000,
   });
 }

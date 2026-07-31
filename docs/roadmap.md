@@ -132,7 +132,12 @@ Scope:
 
 Status:
 
-- planned
+- in progress
+
+Notes:
+
+- the `BetSlip` vertical slice is implemented as the main coupon entity
+- full roadmap completion for this stage remains blocked until schema validation, migrations, tests, frontend checks, and build are all confirmed in the project environment
 
 ### 9. Statistics
 

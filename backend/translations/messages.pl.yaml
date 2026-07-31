@@ -33,6 +33,23 @@ tag:
     name_unique: 'Tag o tej nazwie już istnieje.'
     slug_unique: 'Tag o tym slugu już istnieje.'
 
+bet_slip:
+  api:
+    not_found: 'Nie znaleziono kuponu.'
+    bookmaker_required: 'Wymagane jest poprawne bookmakerId.'
+    bookmaker_invalid: 'Wybrany bukmacher jest nieprawidłowy.'
+    bookmaker_inactive: 'Wybrany bukmacher nie jest już aktywny.'
+    competition_invalid: 'Wybrano niedozwolone lub nieaktywne rozgrywki.'
+    tag_invalid: 'Wybrano niedozwolone tagi.'
+    stake_required: 'Wymagana jest poprawna stawka.'
+    total_odds_required: 'Wymagany jest poprawny totalOdds.'
+    tax_percent_required: 'Wymagany jest poprawny taxPercent.'
+    actual_payout_invalid: 'Wymagany jest poprawny actualPayout.'
+    placed_at_required: 'Wymagane jest poprawne placedAt.'
+    settled_at_invalid: 'Wymagane jest poprawne settledAt.'
+    status_required: 'Wymagany jest poprawny status.'
+    status_invalid: 'Wybrany status kuponu jest nieprawidłowy.'
+
 admin:
   dashboard:
     title: 'Bet Stats'
@@ -43,6 +60,7 @@ admin:
     bookmakers: 'Bukmacherzy'
     tags: 'Tagi'
     competitions: 'Rozgrywki'
+    bet_slips: 'Kupony'
     api_health: 'Stan API'
     sign_out: 'Wyloguj'
   field:
@@ -68,3 +86,6 @@ admin:
   tag:
     singular: 'Tag'
     plural: 'Tagi'
+  bet_slip:
+    singular: 'Kupon'
+    plural: 'Kupony'

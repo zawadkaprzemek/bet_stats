@@ -3,4 +3,5 @@ export type Bookmaker = {
   name: string;
   slug: string;
   emoji: string | null;
+  defaultTaxPercent: string;
 };

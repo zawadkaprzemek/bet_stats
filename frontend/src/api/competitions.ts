@@ -5,6 +5,10 @@ export function fetchCompetitions(sportId: number): Promise<Competition[]> {
   return apiFetch<Competition[]>(`/competitions?sport=${sportId}`);
 }
 
+export function fetchVisibleCompetitions(): Promise<Competition[]> {
+  return apiFetch<Competition[]>('/competitions');
+}
+
 export function createCompetition(input: CreateCompetitionInput): Promise<Competition> {
   return apiFetch<Competition>('/competitions', {
     method: 'POST',

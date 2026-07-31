@@ -28,6 +28,18 @@ const SettingsPage = lazy(async () => {
   return { default: module.SettingsPage };
 });
 
+const BetSlipsPage = lazy(async () => {
+  const module = await import('../pages/bet-slips-page');
+
+  return { default: module.BetSlipsPage };
+});
+
+const BetSlipDetailsPage = lazy(async () => {
+  const module = await import('../pages/bet-slip-details-page');
+
+  return { default: module.BetSlipDetailsPage };
+});
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -40,13 +52,9 @@ export function AppRoutes() {
           <Route index element={<DashboardPage />} />
           <Route
             path="/kupony"
-            element={
-              <PlaceholderPage
-                title="Kupony"
-                description="Space reserved for ticket intake, settlement summaries and quick filters."
-              />
-            }
+            element={<BetSlipsPage />}
           />
+          <Route path="/kupony/:id" element={<BetSlipDetailsPage />} />
           <Route
             path="/statystyki"
             element={

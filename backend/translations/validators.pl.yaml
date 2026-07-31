@@ -27,3 +27,21 @@ tag:
     slug_too_long: 'Slug tagu nie może być dłuższy niż {{ limit }} znaków.'
     slug_unique: 'Tag o tym slugu już istnieje.'
     color_invalid: 'Kolor tagu musi być poprawnym kolorem HEX.'
+
+bet_slip:
+  validation:
+    name_too_long: 'Nazwa kuponu nie może być dłuższa niż {{ limit }} znaków.'
+    description_required: 'Opis kuponu jest wymagany.'
+    stake_invalid: 'Stawka musi być poprawną kwotą z dwoma miejscami po przecinku.'
+    stake_positive: 'Stawka musi być większa od zera.'
+    total_odds_invalid: 'Kurs całkowity musi mieć maksymalnie trzy miejsca po przecinku.'
+    total_odds_min: 'Kurs całkowity musi być większy lub równy 1.001.'
+    selections_count_positive: 'Liczba selekcji musi być większa od zera.'
+    tax_percent_invalid: 'Podatek musi mieć dwa miejsca po przecinku.'
+    tax_percent_range: 'Podatek musi mieścić się w zakresie od 0 do 100.'
+    actual_payout_invalid: 'Rzeczywista wypłata musi być poprawną kwotą z dwoma miejscami po przecinku.'
+    actual_payout_required: 'Rzeczywista wypłata jest wymagana dla rozliczonego kuponu.'
+    actual_payout_non_negative: 'Rzeczywista wypłata nie może być ujemna.'
+    actual_payout_positive_for_won: 'Wygrany kupon musi mieć dodatnią rzeczywistą wypłatę.'
+    settled_at_required: 'Data rozliczenia jest wymagana dla rozliczonego kuponu.'
+    pending_settlement_fields: 'Oczekujący kupon nie może mieć wypłaty ani daty rozliczenia.'

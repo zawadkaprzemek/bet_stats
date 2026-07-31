@@ -33,6 +33,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(BookmakerCrudController::class, t('admin.menu.bookmakers'), 'fa fa-building');
         yield MenuItem::linkTo(TagCrudController::class, t('admin.menu.tags'), 'fa fa-tags');
         yield MenuItem::linkTo(CompetitionCrudController::class, t('admin.menu.competitions'), 'fa fa-trophy');
+        yield MenuItem::linkTo(BetSlipCrudController::class, t('admin.menu.bet_slips'), 'fa fa-receipt');
         yield MenuItem::linkToRoute(t('admin.menu.api_health'), 'fa fa-heartbeat', 'api_health');
     }
 

@@ -183,6 +183,7 @@ Implemented today:
 
 - session-based authentication in Symfony
 - REST endpoints for auth, health, sports, and competitions
+- REST endpoints for bookmakers, tags, and bet slips
 - private and global competition visibility model
 - EasyAdmin back office
 - React application shell with protected routes
@@ -191,9 +192,32 @@ Not yet implemented today:
 
 - dedicated backend service layer for all current use cases
 - region dictionary
-- bookmaker dictionary
 - bet type modules
-- tags, bets, settlement, statistics, dashboard domain modules
+- statistics and dashboard domain modules
+
+## Bet Slip Module
+
+`BetSlip` is the primary transactional domain module.
+
+Architectural rules for this module:
+
+- `BetSlip` represents the entire bookmaker coupon
+- selections are intentionally not stored as child entities
+- free-text coupon description is the source input instead of event rows
+- write flows are orchestrated through services, not controllers
+- calculated fields such as predicted payout, profit, and ROI are computed on demand and not persisted
+- settlement rules are isolated in a dedicated settlement service
+- historical tax behavior is preserved by storing the tax percentage snapshot on each bet slip
+
+The current implementation uses:
+
+- `BetSlipController` for HTTP input/output
+- `BetSlipService` for create, update, list, and delete orchestration
+- `BetSlipSettlementService` for status transition rules
+- `BetSlipCalculator` for payout, profit, and ROI calculation
+- `BetSlipViewFactory` for API shaping
+
+This keeps the module aligned with the project rule that frontend views consume explicit REST payloads while backend services remain the source of truth for domain logic.
 
 ## Architectural Direction
 

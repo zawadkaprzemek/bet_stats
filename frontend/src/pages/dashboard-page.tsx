@@ -8,7 +8,7 @@ const dashboardCards = [
   },
   {
     title: 'Kupony',
-    description: 'Reserved for bet slip analysis, outcomes, import history and automation status.',
+    description: 'Live bet slip history with settlement, filtering and whole-coupon metadata.',
   },
   {
     title: 'Statystyki',

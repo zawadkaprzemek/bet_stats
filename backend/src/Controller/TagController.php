@@ -11,18 +11,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/tags')]
 final class TagController extends AbstractController
 {
+    public function __construct(
+        private TranslatorInterface $translator,
+    ) {
+    }
+
     #[Route('', name: 'api_tags_index', methods: ['GET'])]
     public function index(TagService $tagService, TagViewFactory $tagViewFactory): JsonResponse
     {
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->translator->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         $tags = array_map(
@@ -43,14 +49,14 @@ final class TagController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->translator->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         try {
             /** @var array{name?:mixed, emoji?:mixed, color?:mixed} $payload */
             $payload = $request->toArray();
         } catch (\JsonException) {
-            return $this->json(['message' => $this->trans('api.invalid_json')], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->translator->trans('api.invalid_json')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $name = is_string($payload['name'] ?? null) ? $payload['name'] : '';
@@ -60,7 +66,7 @@ final class TagController extends AbstractController
         try {
             $tag = $tagService->createForUser($user, $name, $emoji, $color);
         } catch (TagConflictException $exception) {
-            return $this->json(['message' => $this->trans($exception->getMessage())], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json(['message' => $this->translator->trans($exception->getMessage())], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $violations = $validator->validate($tag);
@@ -85,14 +91,14 @@ final class TagController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->translator->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         try {
             /** @var array{name?:mixed, emoji?:mixed, color?:mixed} $payload */
             $payload = $request->toArray();
         } catch (\JsonException) {
-            return $this->json(['message' => $this->trans('api.invalid_json')], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->translator->trans('api.invalid_json')], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $name = is_string($payload['name'] ?? null) ? $payload['name'] : '';
@@ -102,9 +108,9 @@ final class TagController extends AbstractController
         try {
             $tag = $tagService->updateForUser($user, $id, $name, $emoji, $color);
         } catch (TagNotFoundException) {
-            return $this->json(['message' => $this->trans('tag.api.not_found')], JsonResponse::HTTP_NOT_FOUND);
+            return $this->json(['message' => $this->translator->trans('tag.api.not_found')], JsonResponse::HTTP_NOT_FOUND);
         } catch (TagConflictException $exception) {
-            return $this->json(['message' => $this->trans($exception->getMessage())], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json(['message' => $this->translator->trans($exception->getMessage())], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $violations = $validator->validate($tag);
@@ -124,13 +130,13 @@ final class TagController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return $this->json(['message' => $this->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->json(['message' => $this->translator->trans('api.auth_required')], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         try {
             $tagService->deleteForUser($user, $id);
         } catch (TagNotFoundException) {
-            return $this->json(['message' => $this->trans('tag.api.not_found')], JsonResponse::HTTP_NOT_FOUND);
+            return $this->json(['message' => $this->translator->trans('tag.api.not_found')], JsonResponse::HTTP_NOT_FOUND);
         }
 
         return $this->json(null, JsonResponse::HTTP_NO_CONTENT);

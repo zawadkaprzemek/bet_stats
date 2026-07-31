@@ -137,5 +137,6 @@ make test
 ## Related Documents
 
 - [Architecture](./architecture.md)
+- [API](./api.md)
 - [Domain Rules](./domain-rules.md)
 - [Roadmap](./roadmap.md)
