@@ -1,5 +1,8 @@
 # bet_stats
 
+BetStats to rozwijana aplikacja full-stack do zarządzania rozgrywkami sportowymi i analizy statystyk. Projekt wykorzystuje Symfony 7, React, TypeScript, MySQL i Docker. Obecnie zaimplementowano uwierzytelnianie, zarządzanie użytkownikami oraz podstawowe moduły sportów i rozgrywek.
+
+
 Środowisko developerskie Docker dla projektu:
 
 - backend: PHP 8.4 FPM + Symfony 7
